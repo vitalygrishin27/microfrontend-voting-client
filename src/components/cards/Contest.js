@@ -17,10 +17,10 @@ const Contest = (contest) => {
     return (
         <div className={"card text-center"}>
             <div className={"overflow"}>
-                <img src={contest.contest.photo} alt={"contest"} width={"200px"} height={"300px"}/>
+                <img src={contest.contest.photo} alt={"contest"} width={"200px"} height={"300px"} onClick={() => handleSetCurrentContest()}/>
             </div>
             <div className={"card-body text-dark"}>
-                <h4 className={"card-title"}>{contest.contest.name}</h4>
+                <h4 className={"card-title"} onClick={() => handleSetCurrentContest()}>{contest.contest.name}</h4>
             </div>
             <button className={"btn btn-success text-white"}
                     onClick={() => handleSetCurrentContest()}>{t("Select contest")} </button>

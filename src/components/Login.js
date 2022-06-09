@@ -49,7 +49,7 @@ const Login = () => {
                                    value={password} onChange={e => setPassword(e.target.value)}/>
                         </div>
                         <div className={"form-group"}>
-                            <input type={"submit"} value={"Create"} className={"btn btn-dark"}
+                            <input type={"submit"} value={"ENTER"} className={"btn btn-dark"}
                                    style={{"width": "100%"}}/>
                         </div>
                     </form>

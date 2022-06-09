@@ -9,7 +9,7 @@ import {
     clearCurrentPerformance, changeSelectedMark, submitMarksAsync, setToastShowing
 } from "../redux/reducers/common/common.thunks";
 import {Badge} from "react-bootstrap";
-import Footer from "./Footer";
+import Header from "./Header";
 import {toast} from "react-toastify";
 
 const Voting = () => {
@@ -92,6 +92,7 @@ const Voting = () => {
             <div className={"container"}>
                 {currentPerformance && (
                     <div className={"row"}>
+                        <Header performance={currentPerformance}/>
                         <div className={"col-md-10 mx-auto mt-3"}>
                             <table className={"table table-hover"}>
                                 <thead className={"text-white bg-dark text-center"}>
@@ -152,8 +153,6 @@ const Voting = () => {
                                 </tbody>
                             </table>
                         </div>
-
-                        <Footer performance={currentPerformance}/>
                     </div>
                 )}
 

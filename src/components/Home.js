@@ -65,9 +65,11 @@ const Home = () => {
                             <Contest key={contest.id} contest={contest}/>
 
                         </div>
+                        <div className={"my-3"}></div>
                     </div>
                 ))}
             </div>
+
         </div>
     )
 }

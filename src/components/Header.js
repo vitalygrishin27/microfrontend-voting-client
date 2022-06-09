@@ -4,17 +4,15 @@ const style = {
     backgroundColor: "#F8F8F8",
     borderTop: "1px solid #E7E7E7",
     textAlign: "center",
-    padding: "20px",
-    position: "fixed",
+    padding: "5px",
     left: "0",
     bottom: "0",
-    height: "220px",
     width: "100%"
 };
 
-const Footer = (performance) => {
+const Header = (performance) => {
     return (
-        <div style={style}  className={"text-white bg-dark text-center"}>
+        <div style={style}  className={"text-dark bg-warning text-center"}>
             <h1>{performance.performance.name}</h1>
             <h5>{performance.performance.description}</h5>
             <h3>{performance.performance.fullName}</h3>
@@ -24,4 +22,4 @@ const Footer = (performance) => {
     );
 }
 
-export default Footer;
+export default Header;
