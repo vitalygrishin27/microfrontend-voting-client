@@ -1,5 +1,4 @@
 import React from 'react'
-import {loginOut} from "../../redux/reducers/login/login.thunks";
 import {useDispatch} from "react-redux";
 import {useTranslation} from "react-i18next";
 import {selectCurrentContest} from "../../redux/reducers/common/common.thunks";

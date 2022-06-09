@@ -1,5 +1,6 @@
 import actionTypes from "./common.actionTypes"
 import initialState from "./common.initialStates"
+import {isNull} from "lodash";
 
 const commonReducer = (state = initialState, {type, payload}) => {
     switch (type) {
@@ -17,7 +18,7 @@ const commonReducer = (state = initialState, {type, payload}) => {
                 isLoading: false,
                 contests: payload,
                 error: null,
-                isToastShowing: true,
+                isToastShowing: false,
             };
         case actionTypes.CONTEST_LOAD_ERROR:
             return {
@@ -81,6 +82,40 @@ const commonReducer = (state = initialState, {type, payload}) => {
                 ...state,
                 currentPerformance: null,
             };
+        case actionTypes.CHANGE_SELECTED_MARK:
+            let updatedSelectedMarks = state.selectedMarks;
+            if (isNull(state.selectedMarks)) {
+                updatedSelectedMarks = new Map();
+            }
+            updatedSelectedMarks.set(payload.criteriaId, payload.mark)
+            return {
+                ...state,
+                selectedMarks: updatedSelectedMarks,
+            };
+        case actionTypes.SUBMIT_MARKS_START:
+            return {
+                ...state,
+                isLoading: true,
+                error: null,
+                isToastShowing: false,
+            };
+        case actionTypes.SUBMIT_MARKS_SUCCESS:
+            return {
+                ...state,
+                isLoading: false,
+                currentPerformance: null,
+                selectedMarks: new Map(),
+                error: null,
+                isToastShowing: true,
+            };
+        case actionTypes.SUBMIT_MARKS_ERROR:
+            return {
+                ...state,
+                isLoading: false,
+                error: payload,
+                isToastShowing: true,
+            };
+
         default:
             return state;
     }

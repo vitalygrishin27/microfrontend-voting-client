@@ -7,6 +7,7 @@ const initState = {
     isToastShowing: false,
     requestActivePerformanceError: null,
     activeTimers: [],
+    selectedMarks: new Map(),
 };
 
 export default initState

@@ -17,6 +17,7 @@ const Home = () => {
     useEffect(() => {
         dispatch(clearCurrentPerformance());
         if (!isLoginIn) {
+            console.log("Trying to login in by token from cookie...");
             const cookie = getCookie("voting_token");
             if (!isEmpty(cookie)) {
                 const data = {

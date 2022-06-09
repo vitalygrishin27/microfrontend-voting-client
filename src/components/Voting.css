@@ -5,10 +5,13 @@ body, html {
 #bg {
     /* Full height */
 
-    width: 100%;
-    height: 100%;
+ /*   width: 100%;*/
+  /*  height: 100%;*/
     /* Center and scale the image nicely */
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
+    display: block;
+    margin-left: auto;
+    margin-right: auto
 }

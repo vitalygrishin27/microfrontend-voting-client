@@ -58,6 +58,24 @@ const clearCurrentPerformance = () => ({
     type: actionTypes.CLEAR_CURRENT_PERFORMANCE,
 })
 
+const changeSelectedMark = (changeMark) => ({
+    type: actionTypes.CHANGE_SELECTED_MARK,
+    payload: changeMark
+})
+
+const submitMarksStart = () => ({
+    type: actionTypes.SUBMIT_MARKS_START,
+})
+
+const submitMarksSuccess = () => ({
+    type: actionTypes.SUBMIT_MARKS_SUCCESS,
+})
+
+const submitMarksError = (error) => ({
+    type: actionTypes.SUBMIT_MARKS_ERROR,
+    payload: error
+})
+
 const actions = {
     contestsLoadStart,
     contestsLoadSuccess,
@@ -71,7 +89,11 @@ const actions = {
     addActiveTimer,
     removeActiveTimer,
     clearActiveTimers,
-    clearCurrentPerformance
+    clearCurrentPerformance,
+    changeSelectedMark,
+    submitMarksStart,
+    submitMarksSuccess,
+    submitMarksError,
 }
 
 export default actions;
