@@ -5,6 +5,7 @@ import {Route, Routes} from "react-router-dom";
 import Home from "./components/Home";
 import Login from "./components/Login";
 import Voting from "./components/Voting";
+import Categories from "./components/Categories";
 
 function App() {
     return (
@@ -15,6 +16,7 @@ function App() {
                 <Route path="/*" element={<Home/>}/>
                 <Route path="/login" element={<Login/>}/>
                 <Route path="/voting" element={<Voting/>}/>
+                <Route path="/categories" element={<Categories/>}/>
             </Routes>
         </div>
     );

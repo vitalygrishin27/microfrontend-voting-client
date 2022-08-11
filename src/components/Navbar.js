@@ -7,7 +7,7 @@ import {loginOut} from "../redux/reducers/login/login.thunks";
 const Navbar = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const {t, i18n} = useTranslation()
+    const {t, i18n} = useTranslation();
     const {isLoginIn} = useSelector(state => state.login);
     const {currentContest} = useSelector(state => state.common);
     const changeLanguage = (language) => {
@@ -33,8 +33,6 @@ const Navbar = () => {
                         <Link to={"/juries"} className={"btn btn-outline-dark text-white"}>{t("Juries")}</Link>}
                     {isLoginIn && currentContest &&
                         <Link to={"/categories"} className={"btn btn-outline-dark text-white"}>{t("Categories")}</Link>}
-                    {isLoginIn && currentContest &&
-                        <Link to={"/criteria"} className={"btn btn-outline-dark text-white"}>{t("Criteria")}</Link>}
                     {!isLoginIn &&
                         <Link to={"/login"} className={"btn btn-outline-danger text-white"}>{t("Login in")}</Link>}
                     {isLoginIn && <button className={"btn btn-outline-danger text-white"}

@@ -142,12 +142,13 @@ const Voting = () => {
                                 ))}
                                 <tr>
                                     <td className={"text-white bg-dark text-center"}>
-                                        <h1>Total score: </h1><br/>
+                                        <h1>{t("Total score")}: </h1><br/>
                                         <h1 className={"mx-3"} style={{"fontSize": 55}}>
-                                            <Badge bg="success" text="white"
+                                            {!isLoading?<Badge bg="success" text="white"  pill
                                                    onClick={() => handleSubmit()}
-                                                   style={{"cursor": "pointer"}}>{countMarks()}</Badge>
-                                        </h1><br/>press button to send mark
+                                                   style={{"cursor": "pointer"}}>{countMarks()}</Badge>:
+                                            <Badge bg="danger" text="white"  pill>&#8986;</Badge>}
+                                        </h1><br/>{t("Press")}
                                     </td>
                                 </tr>
                                 </tbody>
