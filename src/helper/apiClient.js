@@ -1,8 +1,8 @@
 import axios from "axios";
 
 const apiClient = () => {
-    const MAIN_ENDPOINT = "https://microservice-voting.herokuapp.com/";
-    // const MAIN_ENDPOINT = "http://localhost:8080/";
+   const MAIN_ENDPOINT = "https://microservice-voting.herokuapp.com/client/";
+   // const MAIN_ENDPOINT = "http://localhost:8080/client/";
 
     return axios.create({
         baseURL: MAIN_ENDPOINT
@@ -10,7 +10,6 @@ const apiClient = () => {
 };
 
 export const getCookie = (c_name) => {
-    console.log("Trying to login in by token from cookie...");
     if (document.cookie.length > 0) {
         let c_start = document.cookie.indexOf(c_name + "=");
         if (c_start !== -1) {
