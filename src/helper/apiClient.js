@@ -1,8 +1,8 @@
 import axios from "axios";
 
 const apiClient = () => {
-   const MAIN_ENDPOINT = "https://microservice-voting.herokuapp.com/client/";
-   // const MAIN_ENDPOINT = "http://localhost:8080/client/";
+   //const MAIN_ENDPOINT = "https://microservice-voting.herokuapp.com/client/";
+   const MAIN_ENDPOINT = "http://192.168.0.213:8080/client/";
 
     return axios.create({
         baseURL: MAIN_ENDPOINT
