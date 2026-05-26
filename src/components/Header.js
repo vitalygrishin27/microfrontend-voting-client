@@ -1,25 +1,74 @@
 import React from "react";
+import "./Header.css";
 
-const style = {
-    backgroundColor: "#F8F8F8",
-    borderTop: "1px solid #E7E7E7",
-    textAlign: "center",
-    padding: "5px",
-    left: "0",
-    bottom: "0",
-    width: "100%"
-};
+const Header = ({ performance }) => {
+    if (!performance) return null;
 
-const Header = (performance) => {
+    const hasPhoto = Boolean(performance.memberPhoto);
+
     return (
-        <div style={style}  className={"text-dark bg-warning text-center"}>
-            <h1>{performance.performance.name}</h1>
-            <h5>{performance.performance.description}</h5>
-            <h3>{performance.performance.fullName}</h3>
-            <h3>{performance.performance.place}</h3>
-            <h3>Category: {performance.performance.category.name}</h3>
+        <div className="performance-hero">
+
+            <div className="performance-overlay">
+
+                <div className="performance-content">
+
+                    {/* PHOTO */}
+                    <div className="performance-photo">
+                        {hasPhoto ? (
+                            <img
+                                src={performance.memberPhoto}
+                                alt={performance.name}
+                                loading="lazy"
+                            />
+                        ) : (
+                            <div className="photo-placeholder">
+                                {performance.name?.charAt(0) || "?"}
+                            </div>
+                        )}
+                    </div>
+
+                    {/* MAIN */}
+                    <div className="performance-main">
+
+                        <div className="performance-category">
+                            {performance.category?.name}
+                        </div>
+
+                        <h1 className="performance-title">
+                            {performance.name}
+                        </h1>
+
+                        <div className="performance-description">
+                            {performance.description}
+                        </div>
+
+                    </div>
+
+                    {/* META */}
+                    <div className="performance-meta">
+
+                        <div className="performance-meta-card">
+                            <div className="meta-label">Participant</div>
+                            <div className="meta-value">
+                                {performance.fullName}
+                            </div>
+                        </div>
+
+                        <div className="performance-meta-card">
+                            <div className="meta-label">Place</div>
+                            <div className="meta-value">
+                                {performance.place}
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
         </div>
     );
-}
+};
 
 export default Header;

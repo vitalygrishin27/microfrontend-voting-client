@@ -1,53 +1,107 @@
 import React from "react";
-import {Link, useNavigate} from "react-router-dom";
-import {useTranslation} from "react-i18next";
-import {useDispatch, useSelector} from "react-redux";
-import {loginOut} from "../redux/reducers/login/login.thunks";
+import { Link, useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+import { useDispatch, useSelector } from "react-redux";
+import { loginOut } from "../redux/reducers/login/login.thunks";
 
 const Navbar = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const {t, i18n} = useTranslation();
-    const {isLoginIn} = useSelector(state => state.login);
-    const {currentContest} = useSelector(state => state.common);
-    const changeLanguage = (language) => {
-        i18n.changeLanguage(language);
-    }
+    const { t, i18n } = useTranslation();
+    const { isLoginIn } = useSelector(state => state.login);
+    const { currentContest } = useSelector(state => state.common);
+
+    const changeLanguage = (e) => {
+        i18n.changeLanguage(e.target.value);
+    };
 
     const handleLogOut = () => {
         dispatch(loginOut());
-        document.cookie = "voting_token=" + escape("") + "; expires=Thu, 01 Jan 1970 00:00:01 GMT"
-        navigate("/")
-    }
+        document.cookie = "voting_token=; expires=Thu, 01 Jan 1970 00:00:01 GMT";
+        navigate("/");
+    };
 
     return (
-        <div className={"col-md-12 bg-dark py-2"}>
-            <nav className="navbar navbar-dark bg-dark">
-                <Link to="/"
-                      className="navbar-brand mx-5">{t("Main")} {currentContest && ('(' + currentContest.name + ')')}</Link>
+        <nav className="navbar navbar-expand-lg navbar-dark bg-dark px-3">
 
-                <div className="mx-3" style={{"textAlign": "right", "display": "inline-block"}}>
-                    {isLoginIn && currentContest &&
-                        <Link to={"/members"} className={"btn btn-outline-dark text-white"}>{t("Members")}</Link>}
-                    {isLoginIn && currentContest &&
-                        <Link to={"/juries"} className={"btn btn-outline-dark text-white"}>{t("Juries")}</Link>}
-                    {isLoginIn && currentContest &&
-                        <Link to={"/categories"} className={"btn btn-outline-dark text-white"}>{t("Categories")}</Link>}
-                    {!isLoginIn &&
-                        <Link to={"/login"} className={"btn btn-outline-danger text-white"}>{t("Login in")}</Link>}
-                    {isLoginIn && <button className={"btn btn-outline-danger text-white"}
-                                          onClick={() => handleLogOut()}>{t("Login out")} </button>}
-                    <div className="mx-3" style={{"display": "inline-block"}}>
-                        <select id={"language"} onChange={(e) => changeLanguage(e.target.value)} defaultValue={"UA"}>
-                            <option value={"ua"}>UA</option>
-                            <option value={"en"}>EN</option>
-                            <option value={"ru"}>RU</option>
-                        </select>
-                    </div>
+            {/* BRAND / LEFT */}
+            <Link to="/" className="navbar-brand fw-bold">
+                {t("Main")}
+                {currentContest && ` (${currentContest.name})`}
+            </Link>
+
+            {/* MOBILE TOGGLER */}
+            <button
+                className="navbar-toggler"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#mainNavbar"
+            >
+                <span className="navbar-toggler-icon"></span>
+            </button>
+
+            {/* COLLAPSIBLE AREA */}
+            <div className="collapse navbar-collapse" id="mainNavbar">
+
+                {/* LEFT MENU
+                <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+
+                    {isLoginIn && currentContest && (
+                        <>
+                            <li className="nav-item">
+                                <Link className="nav-link" to="/members">
+                                    {t("Members")}
+                                </Link>
+                            </li>
+
+                            <li className="nav-item">
+                                <Link className="nav-link" to="/juries">
+                                    {t("Juries")}
+                                </Link>
+                            </li>
+
+                            <li className="nav-item">
+                                <Link className="nav-link" to="/categories">
+                                    {t("Categories")}
+                                </Link>
+                            </li>
+                        </>
+                    )}
+
+                </ul>*/}
+
+                {/* RIGHT CONTROLS */}
+                <div className="d-flex align-items-center gap-2">
+
+                    {!isLoginIn && (
+                        <Link className="btn btn-outline-danger btn-sm" to="/login">
+                            {t("Login in")}
+                        </Link>
+                    )}
+
+                    {isLoginIn && (
+                        <button
+                            className="btn btn-outline-danger btn-sm"
+                            onClick={handleLogOut}
+                        >
+                            {t("Login out")}
+                        </button>
+                    )}
+                    {/*
+                    <select
+                        className="form-select form-select-sm w-auto"
+                        onChange={changeLanguage}
+                        defaultValue="ua"
+                    >
+                        <option value="ua">UA</option>
+                        <option value="en">EN</option>
+                        <option value="ru">RU</option>
+                    </select>*/}
+
                 </div>
-            </nav>
-        </div>
-
+            </div>
+        </nav>
     );
 };
+
 export default Navbar;

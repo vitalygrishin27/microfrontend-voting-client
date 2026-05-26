@@ -1,0 +1,160 @@
+.contest-card {
+    width: 100%;
+    max-width: 280px;
+    height: 380px;
+
+    box-sizing: border-box;
+    min-width: 0;
+
+    border-radius: 24px;
+    overflow: hidden;
+
+    cursor: pointer;
+
+    background: rgba(15, 23, 42, 0.75);
+    border: 1px solid rgba(255,255,255,0.08);
+
+    backdrop-filter: blur(12px);
+
+    box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+
+    transition: 0.25s ease;
+
+    display: flex;
+    flex-direction: column;
+}
+
+.contest-card:hover {
+    transform: translateY(-6px);
+    border-color: rgba(59,130,246,0.35);
+}
+
+/* IMAGE */
+.contest-image {
+    width: 100%;
+    height: 200px;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.contest-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: 0.3s ease;
+}
+
+.contest-card:hover img {
+    transform: scale(1.05);
+}
+
+/* FALLBACK */
+.contest-image-fallback {
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: rgba(15, 23, 42, 0.9);
+}
+
+/* ICON */
+.fallback-icon {
+    font-size: 64px;
+}
+
+/* INFO */
+.contest-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 14px 16px;
+    gap: 8px;
+
+    min-width: 0;
+}
+
+/* TITLE */
+.contest-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: white;
+
+    margin: 0;
+
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+
+    overflow: hidden;
+
+    min-height: 44px;
+
+    word-break: break-word;
+}
+
+/* ACTION */
+.contest-action {
+    margin-top: auto;
+    font-size: 12px;
+    color: rgba(255,255,255,0.5);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+/* CLICK FEEL */
+.contest-card:active {
+    transform: scale(0.98);
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+/* TABLET */
+@media (max-width: 768px) {
+    .contest-card {
+        max-width: 100%;
+        height: 340px;
+    }
+
+    .contest-title {
+        font-size: 16px;
+    }
+
+    .fallback-icon {
+        font-size: 52px;
+    }
+}
+
+/* MOBILE */
+@media (max-width: 480px) {
+    .contest-card {
+        height: 320px;
+        border-radius: 18px;
+    }
+
+    .contest-image {
+        height: 180px;
+    }
+
+    .contest-info {
+        padding: 12px;
+        gap: 6px;
+    }
+
+    .contest-title {
+        font-size: 15px;
+        min-height: auto;
+    }
+
+    .contest-action {
+        font-size: 11px;
+    }
+
+    .fallback-icon {
+        font-size: 44px;
+    }
+}

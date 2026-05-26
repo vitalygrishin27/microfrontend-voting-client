@@ -1,164 +1,214 @@
-import React, {useEffect} from "react";
-import {useTranslation} from "react-i18next";
-import {useDispatch, useSelector} from "react-redux";
-import {useNavigate} from "react-router-dom";
-import './Voting.css'
+import React, { useEffect } from "react";
+import { useTranslation } from "react-i18next";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+
 import {
     requestForActivePerformance,
     clearActiveTimers,
-    clearCurrentPerformance, changeSelectedMark, submitMarksAsync, setToastShowing
+    clearCurrentPerformance,
+    changeSelectedMark,
+    submitMarksAsync,
+    setToastShowing
 } from "../redux/reducers/common/common.thunks";
-import {Badge} from "react-bootstrap";
+
 import Header from "./Header";
-import {toast} from "react-toastify";
+import { toast } from "react-toastify";
+import "./Voting.css";
+
+const marks = [1, 2, 3, 4, 5];
 
 const Voting = () => {
     const dispatch = useDispatch();
-    const {t} = useTranslation();
+    const { t } = useTranslation();
     const navigate = useNavigate();
+
     const {
         currentContest,
         currentPerformance,
         requestActivePerformanceError,
-        selectedMarks, isToastShowing, error, isLoading
+        selectedMarks,
+        isToastShowing,
+        error,
+        isLoading
     } = useSelector(state => state.common);
-    const {isLoginIn} = useSelector(state => state.login);
 
+    const { isLoginIn } = useSelector(state => state.login);
+
+    /* LOGIN GUARD */
     useEffect(() => {
-        console.log("Stating voting...")
         dispatch(setToastShowing(false));
-        dispatch(clearActiveTimers())
-        dispatch(clearCurrentPerformance())
+        dispatch(clearActiveTimers());
+        dispatch(clearCurrentPerformance());
+
         if (!isLoginIn) {
-            navigate("/")
+            navigate("/");
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [isLoginIn, dispatch, navigate]);
 
+    /* FETCH PERFORMANCE */
     useEffect(() => {
-        for (let i = 0; i > -1; i--) {
-            clearTimeout(i)
+        if (!currentContest) return;
+
+        for (let i = 0; i < 20; i++) {
+            clearTimeout(i);
         }
-        if (currentContest)
-            dispatch(requestForActivePerformance(currentContest.id, currentPerformance ? currentPerformance.id : -1));
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [currentPerformance, requestActivePerformanceError]);
 
+        dispatch(
+            requestForActivePerformance(
+                currentContest.id,
+                currentPerformance ? currentPerformance.id : -1
+            )
+        );
+    }, [currentPerformance, requestActivePerformanceError, currentContest, dispatch]);
+
+    /* TOAST */
     useEffect(() => {
-        if (isToastShowing) {
-            if (error) {
-                toast.error(error)
-                dispatch(setToastShowing(false));
-            } else if (!isLoading) {
-                toast.success("Marks were uploaded! Thanks!")
-                dispatch(setToastShowing(false));
-            }
-        }// eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [isLoading])
+        if (!isToastShowing) return;
+
+        if (error) {
+            toast.error(error);
+        } else if (!isLoading) {
+            toast.success("Marks uploaded successfully!");
+        }
+
+        dispatch(setToastShowing(false));
+    }, [isToastShowing, error, isLoading, dispatch]);
 
     const handleSetMark = (criteriaId, mark) => {
-        const changeMark = {
-            criteriaId: criteriaId,
-            mark: mark,
-        }
-        dispatch(changeSelectedMark(changeMark))
-    }
+        dispatch(
+            changeSelectedMark({
+                criteriaId,
+                mark
+            })
+        );
+    };
 
     const handleSubmit = () => {
-        const marks = [];
-        selectedMarks.forEach((value, key, map) => {
-            const mark = {
-                criteriaId: key,
-                value: value
-            }
-            marks.push(mark);
-        })
-        currentPerformance.marks = marks;
+        const marksArray = [];
 
-        dispatch(submitMarksAsync(currentPerformance));
-    }
+        selectedMarks.forEach((value, key) => {
+            marksArray.push({
+                criteriaId: key,
+                value
+            });
+        });
+
+        const payload = {
+            ...currentPerformance,
+            marks: marksArray
+        };
+
+        dispatch(submitMarksAsync(payload));
+    };
 
     const countMarks = () => {
         let sum = 0;
-        selectedMarks.forEach((value, key, map) => {
-            sum += value
-        })
+        selectedMarks.forEach(v => (sum += v));
         return sum;
-    }
-//https://habr.com/ru/post/509258/  --- size of window
+    };
+
     return (
-        <div>
-            {currentContest && !currentPerformance && <img src={currentContest.photo} alt={"contest"} align={"center"} id={"bg"} height={document.documentElement.clientHeight-72}/>}
-            <div className={"container"}>
-                {currentPerformance && (
-                    <div className={"row"}>
-                        <Header performance={currentPerformance}/>
-                        <div className={"col-md-10 mx-auto mt-3"}>
-                            <table className={"table table-hover"}>
-                                <thead className={"text-white bg-dark text-center"}>
-                                </thead>
-                                <tbody>
-                                {currentPerformance.category.criteria && currentPerformance.category && currentPerformance.category.criteria.map((criteria, id) => (
-                                    <tr key={id}>
-                                        <td className={"text-white bg-dark text-center"}><h2>{criteria.name}</h2>
-                                            <br/>
-                                            <h1 className={"mx-3"} style={{"display": "inline-block"}}>
-                                                <Badge pill
-                                                       bg={selectedMarks.get(criteria.id) === 1 ? "info" : "warning"}
-                                                       text="dark"
-                                                       onClick={() => handleSetMark(criteria.id, 1)}
-                                                       style={{"cursor": "pointer"}}>1</Badge>
-                                            </h1>
-                                            <h1 className={"mx-3"} style={{"display": "inline-block"}}>
-                                                <Badge pill
-                                                       bg={selectedMarks.get(criteria.id) === 2 ? "info" : "warning"}
-                                                       text="dark"
-                                                       onClick={() => handleSetMark(criteria.id, 2)}
-                                                       style={{"cursor": "pointer"}}>2</Badge>
-                                            </h1>
-                                            <h1 className={"mx-3"} style={{"display": "inline-block"}}>
-                                                <Badge pill
-                                                       bg={selectedMarks.get(criteria.id) === 3 ? "info" : "warning"}
-                                                       text="dark"
-                                                       onClick={() => handleSetMark(criteria.id, 3)}
-                                                       style={{"cursor": "pointer"}}>3</Badge>
-                                            </h1>
-                                            <h1 className={"mx-3"} style={{"display": "inline-block"}}>
-                                                <Badge pill
-                                                       bg={selectedMarks.get(criteria.id) === 4 ? "info" : "warning"}
-                                                       text="dark"
-                                                       onClick={() => handleSetMark(criteria.id, 4)}
-                                                       style={{"cursor": "pointer"}}>4</Badge>
-                                            </h1>
-                                            <h1 className={"mx-3"} style={{"display": "inline-block"}}>
-                                                <Badge pill
-                                                       bg={selectedMarks.get(criteria.id) === 5 ? "info" : "warning"}
-                                                       text="dark"
-                                                       onClick={() => handleSetMark(criteria.id, 5)}
-                                                       style={{"cursor": "pointer"}}>5</Badge>
-                                            </h1>
-                                        </td>
-                                    </tr>
-                                ))}
-                                <tr>
-                                    <td className={"text-white bg-dark text-center"}>
-                                        <h1>{t("Total score")}: </h1><br/>
-                                        <h1 className={"mx-3"} style={{"fontSize": 55}}>
-                                            {!isLoading?<Badge bg="success" text="white"  pill
-                                                   onClick={() => handleSubmit()}
-                                                   style={{"cursor": "pointer"}}>{countMarks()}</Badge>:
-                                            <Badge bg="danger" text="white"  pill>&#8986;</Badge>}
-                                        </h1><br/>{t("Press")}
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
+        <div className="voting-page">
+
+            {/* WAITING SCREEN */}
+            {!currentPerformance && currentContest && (
+                <div className="waiting-screen">
+                    <div
+                        className="waiting-background"
+                        style={{
+                            backgroundImage: `url(${currentContest.photo})`
+                        }}
+                    />
+
+                    <div className="waiting-overlay">
+                        <div className="waiting-content">
+
+                            <img
+                                src={currentContest.photo}
+                                alt="contest"
+                                className="waiting-logo"
+                            />
+
+                            <h1 className="waiting-title">
+                                Waiting for next performer
+                            </h1>
+
                         </div>
                     </div>
-                )}
+                </div>
+            )}
 
-            </div>
+            {/* VOTING */}
+            {currentPerformance && (
+                <div className="voting-layout">
+
+                    <div className="voting-header">
+                        <Header performance={currentPerformance} />
+                    </div>
+
+                    <div className="voting-body">
+
+                        <div className="criteria-list">
+
+                            {currentPerformance.category.criteria?.map(criteria => (
+                                <div className="criteria-card" key={criteria.id}>
+
+                                    <div className="criteria-header">
+                                        <h2>{criteria.name}</h2>
+                                    </div>
+
+                                    <div className="marks-row">
+
+                                        {marks.map(mark => (
+                                            <button
+                                                key={mark}
+                                                className={`mark-button ${
+                                                    selectedMarks.get(criteria.id) === mark
+                                                        ? "active"
+                                                        : ""
+                                                }`}
+                                                onClick={() =>
+                                                    handleSetMark(criteria.id, mark)
+                                                }
+                                            >
+                                                {mark}
+                                            </button>
+                                        ))}
+
+                                    </div>
+
+                                </div>
+                            ))}
+
+                        </div>
+
+                    </div>
+
+                    {/* FOOTER */}
+                    <div className="submit-bar">
+                        <div className="submit-bar-inner">
+
+                            <div className="total-score">
+                                <span>{t("Total score")}</span>
+                                <h1>{countMarks()}</h1>
+                            </div>
+
+                            <button
+                                className="submit-button"
+                                disabled={isLoading}
+                                onClick={handleSubmit}
+                            >
+                                {isLoading ? "Uploading..." : "Submit"}
+                            </button>
+
+                        </div>
+                    </div>
+
+                </div>
+            )}
         </div>
-    )
-}
-export default Voting
+    );
+};
+
+export default Voting;

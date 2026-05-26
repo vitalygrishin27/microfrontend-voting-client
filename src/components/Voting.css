@@ -1,17 +1,343 @@
-body, html {
+.voting-page {
+    min-height: 100vh;
+    width: 100%;              /* 🔥 FIX */
+    overflow-x: hidden;       /* 🔥 FIX */
+
+    background:
+            radial-gradient(circle at top left, #0b1220 0%, #050814 55%, #020617 100%);
+
+    color: white;
+    font-family: Inter, sans-serif;
+
+    display: flex;
+    justify-content: center;
+}
+
+/* =========================
+   GLOBAL WRAPPER
+========================= */
+
+.voting-layout {
+    width: 100%;
+    max-width: 1100px;
+
+    padding: 24px 20px 120px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+
+    box-sizing: border-box;
+
+    min-width: 0; /* 🔥 FIX flex overflow */
+}
+
+/* =========================
+   CRITERIA SECTION
+========================= */
+
+.criteria-list {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+
+    min-width: 0; /* 🔥 FIX */
+}
+
+.criteria-card {
+    background: rgba(15, 23, 42, 0.72);
+
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 20px;
+
+    padding: 20px;
+
+    backdrop-filter: blur(10px);
+
+    transition: 0.2s ease;
+
+    box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+
+    box-sizing: border-box;
+
+    min-width: 0; /* 🔥 FIX overflow */
+}
+
+.criteria-card:hover {
+    transform: translateY(-2px);
+    border-color: rgba(59,130,246,0.25);
+}
+
+.criteria-header h2 {
+    font-size: 20px;
+    margin: 0 0 16px 0;
+    font-weight: 700;
+
+    word-break: break-word; /* 🔥 FIX long text */
+}
+
+/* =========================
+   MARKS
+========================= */
+
+.marks-row {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr)); /* keep layout safe */
+    gap: 12px;
+
+    min-width: 0; /* 🔥 FIX */
+}
+
+.mark-button {
+    position: relative;
+
+    height: 64px;
+
+    border-radius: 16px;
+
+    border: 1px solid rgba(255,255,255,0.08);
+
+    background: rgba(255,255,255,0.05);
+
+    color: white;
+
+    font-size: 22px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition: 0.2s ease;
+
+    overflow: hidden;
+
+    min-width: 0; /* 🔥 FIX */
+}
+
+.mark-button:hover {
+    transform: translateY(-2px);
+    background: rgba(255,255,255,0.1);
+}
+
+.mark-button::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+
+    background: linear-gradient(135deg, rgba(255,255,255,0.12), transparent);
+
+    opacity: 0;
+
+    transition: 0.2s ease;
+}
+
+.mark-button:hover::before {
+    opacity: 1;
+}
+
+.mark-button.active {
+    background: linear-gradient(135deg, #3b82f6, #2563eb);
+    box-shadow: 0 0 18px rgba(59,130,246,0.35);
+}
+
+/* =========================
+   SUBMIT BAR
+========================= */
+
+.submit-bar {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    width: 100%;        /* 🔥 FIX */
+    max-width: 100vw;   /* 🔥 FIX */
+
+    padding: 14px 24px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    background: rgba(2,6,23,0.92);
+    backdrop-filter: blur(18px);
+
+    border-top: 1px solid rgba(255,255,255,0.08);
+
+    z-index: 100;
+
+    box-sizing: border-box;
+}
+
+.total-score span {
+    font-size: 13px;
+    color: rgba(255,255,255,0.5);
+}
+
+.total-score h1 {
+    margin: 0;
+    font-size: 38px;
+    font-weight: 800;
+}
+
+.submit-button {
+    border: none;
+    border-radius: 14px;
+
+    padding: 14px 28px;
+
+    font-size: 16px;
+    font-weight: 700;
+
+    color: white;
+
+    cursor: pointer;
+
+    background: linear-gradient(135deg, #22c55e, #16a34a);
+
+    box-shadow: 0 10px 25px rgba(34,197,94,0.25);
+
+    transition: 0.2s ease;
+
+    white-space: nowrap;
+}
+
+.submit-button:hover {
+    transform: translateY(-2px);
+}
+
+/* =========================
+   WAITING SCREEN FIX
+========================= */
+
+.waiting-screen {
+    position: fixed;
+    inset: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    overflow: hidden;
+}
+
+.waiting-screen::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+
+    background-size: cover;
+    background-position: center;
+
+    filter: blur(18px) brightness(0.35);
+    transform: scale(1.1);
+}
+
+.waiting-overlay {
+    position: relative;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 100%;
     height: 100%;
 }
 
-#bg {
-    /* Full height */
+.waiting-content {
+    text-align: center;
+}
 
- /*   width: 100%;*/
-  /*  height: 100%;*/
-    /* Center and scale the image nicely */
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
-    display: block;
-    margin-left: auto;
-    margin-right: auto
+.waiting-logo {
+    width: 220px;
+    max-width: 60vw;
+    animation: floating 4s ease-in-out infinite;
+}
+
+.waiting-title {
+    margin-top: 24px;
+    font-size: 30px;
+    font-weight: 700;
+
+    padding: 0 12px;
+}
+
+/* =========================
+   ANIMATION
+========================= */
+
+@keyframes floating {
+    0% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0); }
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 768px) {
+
+    .voting-layout {
+        padding: 16px 14px 120px;
+    }
+
+    .marks-row {
+        gap: 10px;
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+    }
+
+    .mark-button {
+        height: 52px;
+        font-size: 18px;
+    }
+
+    .criteria-header h2 {
+        font-size: 16px;
+    }
+
+    .total-score h1 {
+        font-size: 30px;
+    }
+
+    .submit-button {
+        padding: 12px 18px;
+        font-size: 14px;
+    }
+}
+
+/* =========================
+   🔥 FIXED SUBMIT BAR (CENTERED)
+========================= */
+
+.submit-bar {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    width: 100%;
+
+    background: rgba(2,6,23,0.92);
+    backdrop-filter: blur(18px);
+
+    border-top: 1px solid rgba(255,255,255,0.08);
+
+    z-index: 100;
+
+    display: flex;
+    justify-content: center; /* 🔥 IMPORTANT FIX */
+}
+
+/* INNER CONTAINER */
+.submit-bar-inner {
+    width: 100%;
+    max-width: 1100px;
+
+    padding: 14px 20px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    box-sizing: border-box;
 }
